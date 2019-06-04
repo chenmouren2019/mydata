@@ -1,0 +1,130 @@
+$(function(){
+var btn=$('#list_btn span');
+var img=$('#img_main img');
+var text=$('#list_text');
+var img_width=$('#img_main').width();
+var time;
+var img_index=0;
+var img_next_index;
+img.eq(0).css('zIndex',2).css('left',0);
+img.eq(1).css('zIndex',2).css('left',img_width+'px');
+$.each(btn,function(index){
+$(this).click(function(){
+if(!!time){
+clearInterval(time);
+}
+img_index=index;
+if(img_index==img.length-1){
+img_next_index=0;
+}else if(img_index>img.length-1){
+img_index=0;
+img_next_index=1;
+}else{
+img_next_index=img_index+1;
+}
+img.eq(img_index).css('zIndex',3).css('left',0).siblings().css('zIndex',1);
+img.eq(img_next_index).css('left',img_width+'px');
+btn.eq(img_index).addClass('active').siblings().removeClass('active');
+text.text(img.eq(img_index).attr('alt'));
+imgAniamte();
+});
+});
+imgAniamte();
+function imgAniamte(){
+time=setInterval(function(){
+if(img_index==img.length-1){
+img_next_index=0;
+}else if(img_index>img.length-1){
+img_index=0;
+img_next_index=1;
+}else{
+img_next_index=img_index+1;
+}
+img.eq(img_index).css('zIndex',1).css('left',0).animate({left:-img_width+'px'},1000);
+img.eq(img_next_index).css('zIndex',1).css('left',img_width+'px').animate({left:0},1000);
+btn.eq(img_next_index).addClass('active').siblings().removeClass('active');
+text.text(img.eq(img_next_index).attr('alt'));
+img_index++;
+},3000);
+}
+});
+---------------------------------------------------------------------------
+*{
+margin:0;
+padding:0;
+}
+#box{
+width:1024px;
+height:500px;
+margin:100px auto;
+box-shadow:0 0 3px #333;
+position:relative;
+}
+#img_main{
+width:100%;
+height:100%;
+overflow:hidden;
+position:relative;
+}
+#img_main img{
+width:100%;
+height:auto;
+opacity:1;
+position:absolute;
+top:0;
+}
+#list_bg,#list_text,#list_btn{
+width:100%;
+height:40px;
+line-height:40px;
+position:absolute;
+left:0;
+bottom:0;
+}
+#list_bg{
+z-index:3;
+background:#666;
+opacity:0.6;
+}
+#list_text{
+z-index:4;
+color:#fff;
+margin:0 0 0 20px;
+}
+#list_btn{
+z-index:5;
+display:inline-block;   /*可有可无*/
+text-align:center;
+}
+#list_btn span{
+display:inline-block;
+width:30px;
+height:30px;
+line-height:30px;
+color:#fff;
+background:#666;
+border-radius:30px;
+margin:5px 5px;
+cursor:pointer;
+}
+#list_btn span.active{
+color:#fff;
+background:#f60;
+}
+----------------------------------------------------------------------
+<div id="box">
+<div id="img_main">
+<img src="images/1.jpg" alt="张家界风景区">
+<img src="images/2.jpg" alt="九寨沟风景区">
+<img src="images/3.jpg" alt="桂林山水风景区">
+</div>
+<p id="list_bg"></p>
+<p id="list_text">
+张家界风景区
+</p>
+<div id="list_btn">
+<span class="active">1</span>
+<span>2</span>
+<span>3</span>
+</div>
+</div>
